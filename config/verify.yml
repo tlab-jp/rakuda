@@ -1,0 +1,9 @@
+default: &default
+  limit: 0      # check limit count per model
+  models: []
+
+production:
+  <<: *default
+
+test:
+  <<: *default

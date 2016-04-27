@@ -1,0 +1,2 @@
+module GeneralAttributes
+end

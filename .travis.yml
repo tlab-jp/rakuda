@@ -1,0 +1,24 @@
+language: ruby
+cache:
+  directories:
+    - vendor/bundle
+install: bundle install --path=vendor/bundle
+rvm:
+    - 2.1.0
+    - 2.2.0
+    - 2.3.0
+env:
+  global:
+    - RAKUDA_ENV=test
+script:
+    - ruby --version
+    - \cp -r test/config .
+    - \cp -r test/db .
+    - \cp -r test/lib .
+    - bundle exec rake db:migrate RAKUDA_DB=test_before_database
+    - bundle exec rake db:migrate RAKUDA_DB=test_after_database
+    - bundle exec rake db:seed RAKUDA_DB=test_before_database
+    - bundle exec rake data:generate
+    - bundle exec rake data:submit
+    - bundle exec rake data:verify
+    - ruby test/test.rb

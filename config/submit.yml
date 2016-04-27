@@ -1,0 +1,9 @@
+default: &default
+  force_reset: true # truncate all data
+  models: []
+
+production:
+  <<: *default
+
+test:
+  <<: *default

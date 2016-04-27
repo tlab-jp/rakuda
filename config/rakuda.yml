@@ -1,0 +1,10 @@
+default: &default
+  debug: false      # output debug logs
+  threads: 0
+  output_type: json # yaml or json
+
+production:
+  <<: *default
+
+test:
+  <<: *default

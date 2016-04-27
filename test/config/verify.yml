@@ -1,0 +1,27 @@
+default: &default
+  limit: 0      # check limit count per model
+  models: []
+
+production:
+  <<: *default
+
+test:
+  <<: *default
+  models:
+    -
+      name: Test
+      after:
+        db: test_after_database
+        table: tests
+        modules:
+          - TestAfterAttributes
+      before:
+        db: test_before_database
+        id: test_id
+        table: test
+        modules:
+          - TestBeforeAttributes
+      attributes:
+        id: test_id
+        test_after: test_before
+        test: test

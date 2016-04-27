@@ -1,5 +1,7 @@
 # rakuda #
 
+* master: [![Build Status](https://travis-ci.org/tlab-jp/rakuda.svg?branch=master)](https://travis-ci.org/tlab-jp/rakuda)
+
 ## rakuda使用方法 ##
 
 ActiveRecordを利用したマイグレータです。

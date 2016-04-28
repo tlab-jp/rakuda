@@ -30,7 +30,7 @@ Verifies.models.each do |model|
         ["
     flg=true
     (model.attributes || {}).each do |k, v| 
-      method_name = (key == "after" ? k : v)
+      method_name = (key == "after" ? v : k)
       if flg == true
         flg = false
       else

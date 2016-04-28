@@ -15,7 +15,7 @@ test:
       table: test
       auto_numbering: true
       aliases:
-        test_after: test_before
+        test_before: test_after
       modules:
         - TestAttributes
       attributes:

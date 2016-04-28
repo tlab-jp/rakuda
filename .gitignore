@@ -13,7 +13,7 @@
 /tmp
 /vendor/bundler/
 /.pry_history
-/doc/*
+/doc/*.yml
 *~
 .*.sw*
 /dist/*

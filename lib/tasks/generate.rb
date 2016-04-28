@@ -28,7 +28,7 @@ Generates.models.each do |model|
   (model.aliases || {}).each do |k, v|
     next unless k
     next unless v
-    gen_code += "alias_attribute :#{k}, :#{v}
+    gen_code += "alias_attribute :#{v}, :#{k}
     "
   end
 

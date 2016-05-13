@@ -2,8 +2,11 @@ Dir.glob(Rakuda.root.join("lib").join("migrate").join("*.rb")).each do |file|
   require file
 end
 
+if Migrates.models.nil?
+  puts "migration setting is not define"
+  exit 2
+end
 puts "[start migrate]=============#{Time.now}"
-
 Migrates.models.each do |migration|
   classname = migration.name
   classname_before = "#{classname}Before"
@@ -122,7 +125,7 @@ Migrates.models.each do |migration|
         obj.send("#{key}=", data.send(key)) if data.attribute_names.include?(key)
       end
     end
-    migration.attributes.each do |key1, key2|
+    (migration.attributes || {}).each do |key1, key2|
       obj.send("#{key2}=", data.send(key1))
     end
     begin

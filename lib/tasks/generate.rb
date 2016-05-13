@@ -5,6 +5,10 @@ end
 FileUtils.rm_rf Rakuda.im_path
 FileUtils.mkdir_p Rakuda.im_path
 
+if Generates.models.nil?
+  puts "generate setting is not define"
+  exit 2
+end
 puts "[start generate]=============#{Time.now}"
 puts "出力先: #{Rakuda.im_path}"
 

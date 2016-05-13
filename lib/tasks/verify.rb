@@ -8,6 +8,10 @@ FileUtils.mkdir_p Rakuda.verify_path
 FileUtils.mkdir_p Rakuda.verify_path.join("before")
 FileUtils.mkdir_p Rakuda.verify_path.join("after")
 
+if Verifies.models.nil?
+  puts "verify setting is not define"
+  exit 2
+end
 puts "[start verify(file create)]=============#{Time.now}"
 puts "出力先: #{Rakuda.verify_path}"
 

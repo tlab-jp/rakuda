@@ -8,6 +8,10 @@ unless Dir.exists?(Rakuda.im_path)
   exit 2
 end
 
+if Submits.models.nil?
+  puts "submit setting is not define"
+  exit 2
+end
 puts "[submit start]=============#{Time.now}"
 puts "Data file path: #{Rakuda.im_path}/<files>"
 

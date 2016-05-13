@@ -79,7 +79,12 @@ Submits.models.each do |model|
     else
       ActiveRecord::Base.connection.execute("TRUNCATE #{tablename}")
     end
-    puts classname.constantize.count == 0 ? "成功" : "失敗"
+    if classname.constantize.count == 0
+      classcount = 0
+      puts "成功"
+    else
+      puts "失敗"
+    end
   end
 
   print "Migrate #{classname.constantize.to_s}#{"s" if value.count > 1} ..."

@@ -1,4 +1,5 @@
 # rakuda #
+![Logo](./doc/rakuda-logo.png)  
 
 * master: [![Build Status](https://travis-ci.org/tlab-jp/rakuda.svg?branch=master)](https://travis-ci.org/tlab-jp/rakuda)
 

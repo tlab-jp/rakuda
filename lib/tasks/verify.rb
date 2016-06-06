@@ -24,6 +24,13 @@ Verifies.models.each do |model|
         after_initialize :readonly!
     "
 
+    (value.associations || []).each do |asc|
+      next unless asc.method
+      next unless asc.scope
+      gen_code += "#{asc.method} :#{asc.scope}#{", #{asc.options}" unless asc.options.nil?}
+      "
+    end
+
     (value.modules || []).each do |mdl| 
       gen_code += "include #{mdl}
       "
@@ -62,16 +69,34 @@ Verifies.models.each do |model|
   print "#{model.name} の処理を開始します"
   CSV.open(Rakuda.verify_path.join("after").join(model.name), 'w') do | file |
     scope = "#{model.name}After".constantize.all
-    scope = scope.where("id >= ?",model.after.start_id) if model.after.start_id.to_i > 0
-    scope = scope.where(model.after.scope) unless model.after.scope.nil?
+    unless model.after.scope.nil?
+      (model.after.scope.joins || []).each do |join|
+        scope = scope.joins(join.to_sym)
+      end
+      (model.after.scope.wheres || []).each do |where|
+        scope = scope.where(where)
+      end
+      (model.after.scope.orders || []).each do |order|
+        scope = scope.order(order)
+      end
+    end
     scope.each do |klass|
       file << klass.output_verify
     end
   end
   CSV.open(Rakuda.verify_path.join("before").join(model.name), 'w') do | file |
     scope = "#{model.name}Before".constantize.all
-    scope = scope.where("id >= ?",model.before.start_id) if model.before.start_id.to_i > 0
-    scope = scope.where(model.before.scope) unless model.before.scope.nil?
+    unless model.before.scope.nil?
+      (model.before.scope.joins || []).each do |join|
+        scope = scope.joins(join.to_sym)
+      end
+      (model.before.scope.wheres || []).each do |where|
+        scope = scope.where(where)
+      end
+      (model.before.scope.orders || []).each do |order|
+        scope = scope.order(order)
+      end
+    end
     scope.each do |klass|
       file << klass.output_verify
     end

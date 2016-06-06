@@ -43,21 +43,61 @@ default:
         id: 移行元テーブルのプライマリキー(idの場合は不要)
         table: 移行元テーブル名(ActiveRecord規約通りの場合は不要)
         inheritance: false(移行元テーブルのカラム名でtypeなど予約文字を利用している場合はtrue)
+        # 比較時に他テーブルとの関連が必要な場合のみ記載
+        associations:
+          -
+            method: 関連名(has_many, has_one, belongs_toなど)
+            scope: 関連モデル(Authore の場合 author など)
+            options: オプション(through: books_authors など)
+          -
+            method: 関連名(has_many, has_one, belongs_toなど)
+            scope: 関連モデル(Author の場合 author など)
+            options: オプション(through: books_authors など)
         # 比較用の独自モジュールが必要な場合のみ下記を記載する
         modules:
           - モジュールクラス名1
           - モジュールクラス名2
           - モジュールクラス名3
+        scope:
+          joins:
+            - test    # joinしたい関連名(要associations定義)
+            - sample  # 複数指定可能
+          wheres:
+            - "id > 1"             # 対象データの検索条件
+            - "test.name LIKE '%test&'" # 複数指定可能
+          orders:
+            - "id ASC"    # 対象データのソート条件
+            - "test_id ASC"  # 複数指定可能
       after:
         db: 移行先データベース設定名(config/database.ymlに設定した値)
         id: 移行先テーブルのプライマリキー(idの場合は不要)
         table: 移行先テーブル名(ActiveRecord規約通りの場合は不要)
         inheritance: false(移行先テーブルのカラム名でtypeなど予約文字を利用している場合はtrue)
+        # 比較時に他テーブルとの関連が必要な場合のみ記載
+        associations:
+          -
+            method: 関連名(has_many, has_one, belongs_toなど)
+            scope: 関連モデル(Authore の場合 author など)
+            options: オプション(through: books_authors など)
+          -
+            method: 関連名(has_many, has_one, belongs_toなど)
+            scope: 関連モデル(Author の場合 author など)
+            options: オプション(through: books_authors など)
         # 比較用の独自モジュールが必要な場合のみ下記を記載する
         modules:
           - モジュールクラス名4
           - モジュールクラス名5
           - モジュールクラス名6
+        scope:
+          joins:
+            - test    # joinしたい関連名(要associations定義)
+            - sample  # 複数指定可能
+          wheres:
+            - "id > 1"             # 対象データの検索条件
+            - "test.name LIKE '%test&'" # 複数指定可能
+          orders:
+            - "id ASC"    # 対象データのソート条件
+            - "test_id ASC"  # 複数指定可能
       # 比較項目名を定義
       attributes:
         移行元項目名1: 移行先項目名1

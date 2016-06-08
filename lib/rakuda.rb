@@ -6,11 +6,11 @@ class Rakuda
   end
 
   def self.im_path
-    @@im_path ||= (ENV["RAKUDA_IM_PATH"] || Rakuda.root.join("dist").join("intermediate_files"))
+    @@im_path ||= (ENV["RAKUDA_IM_PATH"].nil? ? Rakuda.root.join("dist").join("intermediate_files") : Pathname.new(ENV["RAKUDA_IM_PATH"]))
   end
 
   def self.verify_path
-    @@verify_path ||= (ENV["RAKUDA_VF_PATH"] || Rakuda.root.join("dist").join("verify"))
+    @@verify_path ||= (ENV["RAKUDA_VF_PATH"].nil? ? Rakuda.root.join("dist").join("verify") : Pathname.new(ENV["RAKUDA_VF_PATH"]))
   end
 
   def self.dbconfig

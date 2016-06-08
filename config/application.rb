@@ -1,6 +1,3 @@
-# coding: utf-8
-
-
 require File.expand_path('../../lib/rakuda', __FILE__)
 require Rakuda.root.join("config").join("boot")
 require Rakuda.root.join("config").join("boot_environment")

@@ -5,6 +5,8 @@ require 'erb'
 require 'yaml'
 require 'logger'
 
+Rails = Rakuda
+
 task default: :usage
 
 task :usage do
@@ -31,20 +33,27 @@ namespace :data do
 end
 
 namespace :db do
-  desc "Migrate database (require: RAKUDA_DB, optional: VERSION)"
+  desc "Migrate database (require: RAKUDA_ENV, optional: VERSION)"
   task migrate: :dbenv do
-    ActiveRecord::Migrator.migrate(Rakuda.root.join("db", "migrate", ENV["RAKUDA_DB"]), ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+    ActiveRecord::Tasks::DatabaseTasks.migrate
   end
 
-  desc "Reset database (require: RAKUDA_DB)"
-  task reset: :dbenv do
-    ActiveRecord::Migrator.migrate(Rakuda.root.join("db", "migrate", ENV["RAKUDA_DB"]), 0 )
-    ActiveRecord::Migrator.migrate(Rakuda.root.join("db", "migrate", ENV["RAKUDA_DB"]), nil )
+  desc "Reset database (require: RAKUDA_ENV)"
+  task reset: ["db:drop", "db:create", "db:migrate"]
+
+  desc "Create database (require: RAKUDA_ENV)"
+  task create: [:dbenv, :check_safety] do
+    ActiveRecord::Tasks::DatabaseTasks.create_current
   end
 
-  desc "Insert seeds to database (require: RAKUDA_DB)"
+  desc "Drop database (require: RAKUDA_ENV)"
+  task drop: [:dbenv, :check_safety] do
+    ActiveRecord::Tasks::DatabaseTasks.drop_current
+  end
+
+  desc "Insert seeds to database (require: RAKUDA_ENV)"
   task seed: :dbenv do
-    seeds_path = Rakuda.root.join("db", "seeds", "#{ENV["RAKUDA_DB"]}.yml")
+    seeds_path = Rakuda.root.join("db", "seeds", "#{ENV["RAKUDA_ENV"]}.sql")
     IO.foreach(seeds_path) do |row|
       ActiveRecord::Base.connection.execute row
     end
@@ -52,9 +61,17 @@ namespace :db do
 end
 
 task :dbenv do
-  if ENV["RAKUDA_DB"].nil?
-    puts "Require RAKUDA_DB env option"
+  if ENV["RAKUDA_ENV"].nil?
+    puts "Require RAKUDA_ENV env option"
     exit 2
   end
+  ENV["RAILS_ENV"] = Rakuda.env
+  ActiveRecord::Tasks::DatabaseTasks.database_configuration = Rakuda.dbconfig
+  ActiveRecord::Base.configurations = ActiveRecord::Tasks::DatabaseTasks.database_configuration
+  ActiveRecord::Migrator.migrations_paths = Rakuda.root.join("db", "migrate", ENV["RAKUDA_ENV"])
   ActiveRecord::Base.establish_connection Rakuda.dbconfig[ENV["RAKUDA_DB"]]
+end
+
+task :check_safety do
+  #ActiveRecord::Tasks::DatabaseTasks.check_protected_environments!
 end

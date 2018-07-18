@@ -1,4 +1,4 @@
-class CreateTests < ActiveRecord::Migration
+class CreateTests < ActiveRecord::Migration[4.2]
   def change
     create_table :test, id: false do |t|
       t.column :test_id, 'INTEGER PRIMARY KEY AUTOINCREMENT', null: false

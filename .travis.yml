@@ -4,9 +4,10 @@ cache:
     - vendor/bundle
 install: bundle install --path=vendor/bundle
 rvm:
-    - 2.1.0
     - 2.2.0
     - 2.3.0
+    - 2.4.0
+    - 2.5.0
 env:
   global:
     - RAKUDA_ENV=test

@@ -15,9 +15,9 @@ script:
     - \cp -r test/config .
     - \cp -r test/db .
     - \cp -r test/lib .
-    - bundle exec rake db:migrate RAKUDA_DB=test_before_database
-    - bundle exec rake db:migrate RAKUDA_DB=test_after_database
-    - bundle exec rake db:seed RAKUDA_DB=test_before_database
+    - bundle exec rake db:migrate RAKUDA_ENV=test_before_database
+    - bundle exec rake db:migrate RAKUDA_ENV=test_after_database
+    - bundle exec rake db:seed RAKUDA_ENV=test_before_database
     - bundle exec rake data:generate
     - bundle exec rake data:submit
     - bundle exec rake data:verify
